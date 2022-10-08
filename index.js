@@ -16,8 +16,8 @@ debugUsers();
  ***********************************/
 
 // Redirect To Login Page If User Didn't Sign In
-if (location.pathname == '/' && loggedInUser == '') {
-  location.replace('/login.html');
+if (location.pathname == '/simple-login/' && loggedInUser == '') {
+  location.replace('/simple-login/login.html');
 }
 
 /***********************************
@@ -210,7 +210,7 @@ if (signinEmailInput) {
       showMessage(signinPasswordError);
     } else {
       localStorage.setItem('Current-User', user.userName);
-      location.replace('/');
+      location.replace('/simple-login');
     }
   });
 }

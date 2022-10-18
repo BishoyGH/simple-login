@@ -1,7 +1,9 @@
 /***********************************
  * Global
  ***********************************/
-
+const procutionMode = true;
+const projectName = '/simple-login';
+const productionURL = procutionMode ? projectName : '';
 const localUsers = localStorage.getItem('Users');
 const LocalUser = localStorage.getItem('Current-User');
 const registeredUsers = localUsers ? JSON.parse(localUsers) : [];
@@ -16,8 +18,8 @@ debugUsers();
  ***********************************/
 
 // Redirect To Login Page If User Didn't Sign In
-if (location.pathname == '/simple-login/' && loggedInUser == '') {
-  location.replace('/simple-login/login.html');
+if (location.pathname == `${productionURL}/` && loggedInUser == '') {
+  location.replace(`${productionURL}/login.html`);
 }
 
 /***********************************
@@ -101,9 +103,14 @@ if (signupNameInput) {
       showMessage(signupNameError);
       isValidRegName = false;
     } else {
-      if (registeredUsers.some((x) => x.name === this.value)) {
+      if (
+        registeredUsers.some(
+          (x) =>
+            x.userName.toLocaleLowerCase() === this.value.toLocaleLowerCase()
+        )
+      ) {
         // Check If Name Exists
-        signupNameError.innerText = '&cross; This Name Already Exists';
+        signupNameError.innerText = '\u2a2f This Name Already Exists';
         showMessage(signupNameError);
         isValidRegName = false;
       } else {
@@ -123,7 +130,17 @@ if (signupNameInput) {
       showMessage(signupEmailError);
       isValidRegEmail = false;
     } else {
-      isValidRegEmail = true;
+      if (
+        registeredUsers.some(
+          (x) => x.email.toLocaleLowerCase() == this.value.toLocaleLowerCase()
+        )
+      ) {
+        signupEmailError.innerText = '\u2a2f This Email Already Exists';
+        showMessage(signupEmailError);
+        isValidRegEmail = false;
+      } else {
+        isValidRegEmail = true;
+      }
     }
   });
 
@@ -210,7 +227,7 @@ if (signinEmailInput) {
       showMessage(signinPasswordError);
     } else {
       localStorage.setItem('Current-User', user.userName);
-      location.replace('/simple-login');
+      location.replace(`${productionURL}/`);
     }
   });
 }
